@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rechnungsnummergenerator für Atchen</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Rechnungsnummergenerator für Atchen 💰</h1>
+        </div>
+
+        <div class="content">
+            <!-- Funny image about numbers -->
+            <div class="image-container">
+                <svg class="funny-numbers" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background -->
+                    <rect width="400" height="300" fill="#e8f4f8"/>
+                    
+                    <!-- Animated numbers -->
+                    <g class="number" id="num1">
+                        <text x="50" y="80" font-size="60" font-weight="bold" fill="#ff6b6b">7</text>
+                    </g>
+                    
+                    <g class="number" id="num2">
+                        <text x="150" y="120" font-size="50" font-weight="bold" fill="#4ecdc4">3</text>
+                    </g>
+                    
+                    <g class="number" id="num3">
+                        <text x="280" y="100" font-size="55" font-weight="bold" fill="#ffe66d">5</text>
+                    </g>
+                    
+                    <g class="number" id="num4">
+                        <text x="100" y="220" font-size="45" font-weight="bold" fill="#95e1d3">9</text>
+                    </g>
+                    
+                    <g class="number" id="num5">
+                        <text x="250" y="240" font-size="50" font-weight="bold" fill="#a8dadc">2</text>
+                    </g>
+                    
+                    <!-- Smiley made of numbers -->
+                    <circle cx="200" cy="150" r="40" fill="none" stroke="#ffd93d" stroke-width="3"/>
+                    <circle cx="185" cy="140" r="5" fill="#ffd93d"/>
+                    <circle cx="215" cy="140" r="5" fill="#ffd93d"/>
+                    <path d="M 185 160 Q 200 170 215 160" fill="none" stroke="#ffd93d" stroke-width="2" stroke-linecap="round"/>
+                    
+                    <!-- Stars -->
+                    <text x="30" y="50" font-size="30">⭐</text>
+                    <text x="350" y="70" font-size="30">⭐</text>
+                    <text x="40" y="270" font-size="25">✨</text>
+                    <text x="360" y="260" font-size="25">✨</text>
+                </svg>
+            </div>
+
+            <!-- Status and results section -->
+            <div class="stats-container">
+                <div id="stats" class="stats"></div>
+            </div>
+
+            <!-- Result display -->
+            <div class="result-container" id="result-container" style="display: none;">
+                <div class="result-box">
+                    <h2>Generierte Rechnungsnummer:</h2>
+                    <div class="invoice-number" id="invoice-number">---</div>
+                    <p class="result-timestamp" id="result-timestamp"></p>
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="button-container">
+                <button id="generate-btn" class="generate-button">
+                    Rechnungsnummer generieren
+                </button>
+            </div>
+
+            <!-- Loading indicator -->
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2024 Atchen - Rechnungsnummergenerator</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
