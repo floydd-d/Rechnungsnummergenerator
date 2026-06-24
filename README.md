@@ -9,6 +9,8 @@ A playful web application for generating unique invoice numbers. The application
 - 🔢 Uses bitwise shift and XOR operations for code generation
 - 🎨 Responsive design with modern UI
 - 📈 Tracks number of generated invoices per year
+- 💾 Persists generated invoice numbers to `invoice_history.log`
+- 🔁 Restores the last generated number on startup and continues the series
 - 🚀 Python 3.6+ compatible
 
 ## Requirements
@@ -67,6 +69,13 @@ Generates a new invoice number
 Returns statistics about generated invoices
 - Returns JSON with year and count of generated invoices
 
+## Persistence Behavior
+
+- Generated invoice numbers are written to `invoice_history.log`.
+- On startup, the app reads this file and reconstructs the last generated number.
+- The series continues from the last saved invoice number to avoid duplicates across restarts.
+- If the log file does not exist, the app starts a new series from `000`.
+
 ## How It Works
 
 1. **Invoice Number Format**: `YYYYXXX`
@@ -83,6 +92,28 @@ Returns statistics about generated invoices
    - Detects and resolves collisions automatically
    - Resets counter when switching to a new year
 
+## Number Generator Algorithm
+
+The next 3-digit sequence code is derived from the previous code using the following formula:
+
+```text
+next_code = ((previous_code << 2) ^ (previous_code >> 1) ^ 0x2A) & 0x3FF
+next_code = next_code % 1000
+```
+
+- `previous_code << 2` shifts the previous code left by 2 bits.
+- `previous_code >> 1` shifts the previous code right by 1 bit.
+- `^ 0x2A` applies a bitwise XOR with the hexadecimal constant `0x2A`.
+- `& 0x3FF` keeps the result within 10 bits before reducing to the 3-digit range.
+- If the computed code has already been used in the current year, a collision resolution step uses:
+
+```text
+next_code = (next_code ^ 0xAA) & 0x3FF
+next_code = next_code % 1000
+```
+
+- If a collision still remains, the algorithm scans sequentially for the next unused code.
+
 ## UI Components
 
 - **Headline**: "Rechnungsnummergenerator für Atchen" with emoji accents
@@ -96,7 +127,8 @@ Returns statistics about generated invoices
 - **Framework**: Flask 1.1.2 (lightweight and compatible with Python 3.6)
 - **Frontend**: HTML5, CSS3 with animations, vanilla JavaScript
 - **Server**: WSGI-compatible (can run on port specified via command line argument)
-- **Storage**: In-memory (codes reset when application restarts)
+- **Storage**: Persists generated invoice numbers to `invoice_history.log`
+- **Startup recovery**: Reads the history log at launch to continue the series from the last generated code
 
 ## Customization
 
